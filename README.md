@@ -75,6 +75,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 ### TELA RESPONSIVA
-![image](https://user-images.githubusercontent.com/84160974/222936998-5ce58dac-02a5-407a-a2c8-3d9920719fe7.png)
+![image](https://user-images.githubusercontent.com/84160974/222937038-75fb957c-e278-4e7d-96b0-5999ab8e823d.png)
 
 
