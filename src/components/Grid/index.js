@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 const Grid = ({ itens, setItens }) => {
     const onDelete = (ID) => {
-        const http = "http://localhost:3001/";
+        const http = process.env.REACT_APP_LINK_API;
 
         Axios.delete(http + "deletar_conta/" + ID).then((result) => {
             if (result.status === 200) {

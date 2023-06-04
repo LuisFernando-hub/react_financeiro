@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
-    const http = "http://localhost:3001/";
+    const http = process.env.REACT_APP_LINK_API;
     const [transactionsList, setTransitionsList] = useState([])
 
     const [income, setIncome] = useState(0); // Entradas
