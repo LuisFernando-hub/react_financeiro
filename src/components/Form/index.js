@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import Grid from '../Grid';
 import * as C from './styles';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Form = ({ handleAdd, transactionList, setTransitionsList }) => {
     const [desc, setDesc] = useState(""); //Descrição
@@ -12,10 +15,10 @@ const Form = ({ handleAdd, transactionList, setTransitionsList }) => {
 
     const handleSave = () => {
         if (!desc || !amount) {
-            alert("Informe a descrição e o valor!");
+            toast.warning("Informe a descrição e o valor!");
             return;
         } else if (amount < 1) {
-            alert("O valor tem que ser positivo!");
+            toast.warning("O valor tem que ser positivo!");
             return;
         }
 

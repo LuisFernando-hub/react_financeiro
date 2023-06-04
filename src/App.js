@@ -3,31 +3,37 @@ import Form from './components/Form';
 import Header from './components/Header';
 import Resume from './components/Resume';
 import GlobalStyle from './styles/global';
+import Axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+
+
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
-    const data = localStorage.getItem("transactions");
-    const [transactionsList, setTransitionsList] = useState(
-        data ? JSON.parse(data) : []
-    )
+    const http = "http://localhost:3001/";
+    const [transactionsList, setTransitionsList] = useState([])
 
     const [income, setIncome] = useState(0); // Entradas
     const [expense, setExpense] = useState(0); //Saídas
     const [total, setTotal] = useState(0); //Total
 
+
     useEffect(() => {
-        //Filtrando os valores das saidas
-        const amountExpense = transactionsList.filter((item) => item.expense).map((transaction) => Number(transaction.amount));
+        Axios.get(http + "listar_contas").then((result) => {
+            setTransitionsList(result.data);
+        })
 
-        //Filtrando os valores das entradas
-        const amountIncome = transactionsList.filter((item) => !item.expense).map(transaction => Number(transaction.amount));
+        const amountExpense = transactionsList.filter((item) => item.tipo).map((transaction) => Number(transaction.valor));
+        const amountIncome = transactionsList.filter((item) => !item.tipo).map((transaction) => Number(transaction.valor));
 
-        //Todas as saidas total
+        // //Todas as saidas total
         const expense = amountExpense.reduce((acc, cur) => acc + cur, 0).toFixed(2);
 
         //Todas as entradas total
         const income = amountIncome.reduce((acc, cur) => acc + cur, 0).toFixed(2);
 
-        //Total sobre as entradas e saidas
+        // //Total sobre as entradas e saidas
         const total = Math.abs(income - expense).toFixed(2);
 
         setIncome(`R$ ${income}`);
@@ -37,15 +43,23 @@ const App = () => {
     }, [transactionsList]);
 
     const handleAdd = (transaction) => {
-        const newArrayTransactions = [...transactionsList, transaction];
-        setTransitionsList(newArrayTransactions);
+        const { desc, amount, expense } = transaction;
 
-        localStorage.setItem("transactions", JSON.stringify(newArrayTransactions));
+        Axios.post(http + "registrar_contas", {
+            descricao: desc,
+            valor: amount,
+            tipo: expense
+        }).then((response) => {
+            if (response.status === 200) {
+                toast.success("Conta Inserida com sucesso!");
+            }
+        })
     }
 
     return (
         <>
             <Header />
+            <ToastContainer autoClose={3000} />
             <Resume income={income} expense={expense} total={total} />
             <Form handleAdd={handleAdd} transactionList={transactionsList} setTransitionsList={setTransitionsList} />
             <GlobalStyle />

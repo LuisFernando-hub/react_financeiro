@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import GridItem from '../GridItem';
 import * as C from './styles';
+import Axios from 'axios';
+
+import { toast } from 'react-toastify';
 
 
 const Grid = ({ itens, setItens }) => {
     const onDelete = (ID) => {
-        const newArray = itens.filter((transaction) => transaction.id !== ID);
-        setItens(newArray);
-        localStorage.setItem("transactions", JSON.stringify(newArray));
+        const http = "http://localhost:3001/";
+
+        Axios.delete(http + "deletar_conta/" + ID).then((result) => {
+            if (result.status === 200) {
+                toast.success("Conta deletada com sucesso!");
+            }
+        })
     };
 
     return (
